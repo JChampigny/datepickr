@@ -59,7 +59,7 @@
     border-color:#fff;
     }
 .date-pickr .today {
-  background-color:#ffffaa;
+  background-color:#b5daff;
   }
 .date-pickr td a:hover {
   border-color:#1F90FF;
@@ -72,18 +72,20 @@
   }
 .date-pickr td a.active.halfday {
   background-color:#fff;
-  color:#1F90FF;
-  }
-  .date-pickr td a.active.halfday:before {
-    content:'';
-    background-color:#1F90FF;
-    display:block;
-    position:absolute;
-    height:100%;
-    width:100%;
-    top:0;
-    left:-50%;
-    }
+  color:rgba(0,0,0,0.75);
+    z-index: 1;
+}
+.date-pickr td a.active.halfday:before {
+content:'';
+background-color:#1F90FF;
+display:block;
+position:absolute;
+height:100%;
+width:100%;
+top:50%;
+left:0;
+  z-index: -1;
+}
 
 .date-pickr td a.active:hover {
   border-color:rgba(0,0,0,0.25);

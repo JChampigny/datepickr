@@ -36,6 +36,18 @@ var Datepickr = (function() {
     }
   };
 
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   function calendarClick(e) {
     var time = new Date(this.year, this.month).getTime();
     switch (e.target.getAttribute('data-target')) {
@@ -58,13 +70,13 @@ var Datepickr = (function() {
         rebuildCalendar.call(this);
         break;
       case 'day':
-        var d = new Date(this.year, this.month, e.target.textContent).getTime();
+        var d = formatDate(new Date(this.year, this.month, e.target.textContent));
         var c = e.target.classList;
         if (this.config.halfDay) {
           if (c.contains('halfday')) {
             c.remove('halfday');
             this.config.activeDays = this.config.activeDays.map(function(date) {
-              if (date[0] === d) date[1] = 1;
+              if (date[0] === d) date[1] = 'F';
               return date;
             });
           } else if (c.contains('active')) {
@@ -74,7 +86,7 @@ var Datepickr = (function() {
             });
           } else {
             c.add('active', 'halfday');
-            this.config.activeDays.push([d, 0.5]);
+            this.config.activeDays.push([d, 'H']);
           }
         } else {
           if (c.contains('active')) {
@@ -88,9 +100,9 @@ var Datepickr = (function() {
               for (var i = 0; i < daylinks.length; i++) {
                 daylinks[i].classList.remove('active', 'halfday');
               }
-              this.config.activeDays = [[d, 1]];
+              this.config.activeDays = [[d, 'F']];
             } else {
-              this.config.activeDays.push([d, 1]);
+              this.config.activeDays.push([d, 'F']);
             }
             c.add('active');
           }

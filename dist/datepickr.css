@@ -68,7 +68,7 @@
 .date-pickr td a.active {
   background-color:#1F90FF;
   border-color:#1F90FF;
-  color:#fff;
+  color:rgba(0,0,0,0.75);
   }
 .date-pickr td a.active.halfday {
   background-color:#fff;

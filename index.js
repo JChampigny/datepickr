@@ -275,7 +275,7 @@ var Datepickr = (function() {
       if (this.config.activeDays.length) {
         this.config.activeDays.forEach(function(d) {
           if (roundDate.call(self, new Date(d[0])).getTime() === new Date(year, month, i).getTime()) {
-            klass += (d[1] === 1) ? ' active' : ' halfday active';
+            klass += (d[1] === 'F') ? ' active' : ' halfday active';
           }
         });
       }

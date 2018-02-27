@@ -229,11 +229,11 @@ datepickr(el, function(res) {
         console.log(res);
     }, {
       activeDays: [
-        [new Date(d.getFullYear(), d.getMonth(), 1).getTime(), 1],
-        [new Date(d.getFullYear(), d.getMonth(), 2).getTime(), 1],
-        [new Date(d.getFullYear(), d.getMonth(), 12).getTime(), 1],
-        [new Date(d.getFullYear(), d.getMonth(), 13).getTime(), 1],
-        [new Date(d.getFullYear(), d.getMonth(), 22).getTime(), 1],
+        [new Date(d.getFullYear(), d.getMonth(), 1).getTime(), 'F'],
+        [new Date(d.getFullYear(), d.getMonth(), 2).getTime(), 'F'],
+        [new Date(d.getFullYear(), d.getMonth(), 12).getTime(), 'H'],
+        [new Date(d.getFullYear(), d.getMonth(), 13).getTime(), 'F'],
+        [new Date(d.getFullYear(), d.getMonth(), 22).getTime(), 'F'],
       ]
     });
 

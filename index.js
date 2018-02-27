@@ -48,11 +48,30 @@
       return [year, month, day].join('-');
     }
 
+    function makeDate(date) {
+      return new Date(date);
+    }
+
+    function compareFormattedDate(date1, date2) {
+      var dateDetail1 = date1.split('-');
+      var dateDetail2 = date2.split('-');
+
+      if (dateDetail1[0] < dateDetail2[0]) return -1;
+      if (dateDetail1[0] > dateDetail2[0]) return 1;
+
+      if (dateDetail1[1] < dateDetail2[1]) return -1;
+      if (dateDetail1[1] > dateDetail2[1]) return 1;
+
+      if (dateDetail1[2] < dateDetail2[2]) return -1;
+      if (dateDetail1[2] === dateDetail2[2]) return 0;
+      if (dateDetail1[2] > dateDetail2[2]) return 1;
+    }
+
     function calendarClick(e) {
-      var time = new Date(this.year, this.month).getTime();
+      var time = formatDate(new Date(this.year, this.month));
       switch (e.target.getAttribute('data-target')) {
         case 'month-prev':
-          if (this.config.minDate && time <= this.config.minDate) return;
+          if (this.config.minDate && compareFormattedDate(time, this.config.minDate) === -1) return;
           this.month--;
           if (this.month < 0) {
             this.year--;
@@ -61,7 +80,7 @@
           rebuildCalendar.call(this);
           break;
         case 'month-next':
-          if (this.config.maxDate && time >= this.config.maxDate) return;
+          if (this.config.maxDate && compareFormattedDate(time, this.config.maxDate) >= 0) return;
           this.month++;
           if (this.month > 11) {
             this.year++;
@@ -109,7 +128,7 @@
           }
 
           this.config.activeDays.sort(function(a, b) {
-            return a[0] - b[0];
+            return makeDate(a[0]) - makeDate(b[0]);
           });
 
           this.callback(this.config.activeDays);
@@ -272,9 +291,9 @@
 
         var self = this;
         // If any dates were passed set day as active.
-        if (this.config.activeDaysTimestamps.length) {
-          this.config.activeDaysTimestamps.forEach(function(d) {
-            if (roundDate.call(self, new Date(d[0])).getTime() === new Date(year, month, i).getTime()) {
+        if (this.config.activeDays.length) {
+          this.config.activeDays.forEach(function(d) {
+            if (compareFormattedDate(d[0], formatDate(new Date(year, month, i))) === 0) {
               klass += (d[1] === 'F') ? ' active' : ' halfday active';
             }
           });
@@ -350,7 +369,6 @@
         activeDays: [],
         singleSelection: false
       };
-      this.activeDaysTimestamps = [];
 
       this.config.startYear = date.current.year(this.config);
       this.config.startMonth = date.current.month(this.config);
@@ -364,20 +382,6 @@
       }
 
       var self = this;
-
-      // Normalize any active days by rounding them.
-      if (this.config.activeDays.length) {
-        this.config.activeDaysTimestamps = this.config.activeDays.map(function(d) {
-          return [roundDate.call(self, new Date(d[0])).getTime(), d[1]];
-        });
-      }
-
-      // Normalize any omitted days by rounding them.
-      if (this.config.omitDays.length) {
-        this.config.omitDays = this.config.omitDays.map(function(d) {
-          return roundDate.call(self, new Date(d)).getTime();
-        });
-      }
 
       datepickr.options = function(opts) {
         if (opts) {

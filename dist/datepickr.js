@@ -1,1 +1,408 @@
-!function(t){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=t();else if("function"==typeof define&&define.amd)define([],t);else{("undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this).Datepickr=t()}}(function(){return function t(e,i,n){function a(r,s){if(!i[r]){if(!e[r]){var h="function"==typeof require&&require;if(!s&&h)return h(r,!0);if(o)return o(r,!0);var c=new Error("Cannot find module '"+r+"'");throw c.code="MODULE_NOT_FOUND",c}var f=i[r]={exports:{}};e[r][0].call(f.exports,function(t){var i=e[r][1][t];return a(i||t)},f,f.exports,t,e,i,n)}return i[r].exports}for(var o="function"==typeof require&&require,r=0;r<n.length;r++)a(n[r]);return a}({1:[function(t,e,i){!function(t){Date.prototype.getPickrDate=function(t){return t&&t.utc?this.getUTCDate():this.getDate()},Date.prototype.getPickrFullYear=function(t){return t&&t.utc?this.getUTCFullYear():this.getFullYear()},Date.prototype.getPickrMonth=function(t){return t&&t.utc?this.getUTCMonth():this.getMonth()},Date.prototype.getPickrDay=function(t){return t&&t.utc?this.getUTCDay():this.getDay()};var i=function(){var t=new Date,e=[31,28,31,30,31,30,31,31,30,31,30,31],i=[],n={current:{year:function(e){return t.getPickrFullYear(e)},month:function(e){return t.getPickrMonth(e)},day:function(e){return t.getPickrDate(e)}},month:{string:function(t,e){return e[t]},numDays:function(t,i){return 1!==t||3&i||!(i%100)&&i%400?e[t]:29}}};function a(t){var e=new Date(t),i=""+(e.getMonth()+1),n=""+e.getDate(),a=e.getFullYear();return i.length<2&&(i="0"+i),n.length<2&&(n="0"+n),[a,i,n].join("-")}function o(t){return new Date(t)}function r(t,e){var i=t.split("-"),n=e.split("-");return i[0]<n[0]?-1:i[0]>n[0]?1:i[1]<n[1]?-1:i[1]>n[1]?1:i[2]<n[2]?-1:i[2]===n[2]?0:i[2]>n[2]?1:void 0}function s(t,e,n){t in i||(i[t]=document.createElement(t));var a=i[t].cloneNode(!1);if(e)for(var o in e)a.setAttribute(o,e[o]);return n&&("object"==typeof n?a.appendChild(n):a.textContent=n),a}function h(t,e,i){return i===n.current.day(this.config)&&e===n.current.month(this.config)&&t===n.current.year(this.config)}function c(t,e,i){var n=new Date(t,e,i).getPickrDay(this.config);return 0===n||6===n}function f(t,e,i){var n,a=new Date(t,e,i).getTime();return this.config.omitDays.length&&this.config.omitDays.forEach(function(t){t===a&&(n=!0)}),n}function l(){for(;this.calendarBody.hasChildNodes();)this.calendarBody.removeChild(this.calendarBody.lastChild);var t=new Date(this.year,this.month,1).getPickrDay(this.config),e=n.month.numDays(this.month,this.year);this.currentMonth.textContent=n.month.string(this.month,this.config.months)+" "+this.year,this.calendarBody.appendChild(u.call(this,t,e,this.month,this.year))}function u(t,e,i,n){var o,l,u,d=document.createDocumentFragment(),g=s("tr"),y=0;for(u=1;u<=t;u++)g.appendChild(s("td")),y++;for(u=1;u<=e;u++){l=!1,7===y&&(d.appendChild(g),g=s("tr"),y=0),h.call(this,n,i,u)?this.config.omitWeekends&&c.call(this,n,i,u)||this.config.omitDays&&this.config.omitDays.length&&f.call(this,n,i,u)?(o="today quiet",l=!0):o="today":this.config.omitPast&&new Date(n,i,u).getTime()<(new Date).getTime()||this.config.omitFuture&&new Date(n,i,u).getTime()>(new Date).getTime()||this.config.omitWeekends&&c.call(this,n,i,u)||this.config.omitDays&&this.config.omitDays.length&&f.call(this,n,i,u)?(o="fill-light quiet",l=!0):o="fill-light";this.config.activeDays.length&&this.config.activeDays.forEach(function(t){0===r(t[0],a(new Date(n,i,u)))&&(o+="F"===t[1]?" active":" halfday active")}),g.appendChild(s("td",{},s("a",{class:o,"data-target":!l&&"day",href:"#"},u))),y++}for(u=1;u<=7-y;u++)g.appendChild(s("td"));return d.appendChild(g),d}function d(){var t,e,i,h=new Date(this.config.startYear,this.config.startMonth,1).getPickrDay(this.config),c=n.month.numDays(this.month,this.year),f=s("div",{class:"date-pickr"});this.currentMonth=(this.config,t=this.month,e=this.year,i=this.config.months,s("strong",{class:"small"},n.month.string(t,i)+" "+e));var d,g,y,m=(this.config,this.month,this.year,d=s("div",{class:"months"}),g=s("a",{class:"icon next button short quiet","data-target":"month-next",href:"#"}),y=s("a",{class:"icon prev button short quiet","data-target":"month-prev",href:"#"}),d.appendChild(g),d.appendChild(y),d);m.appendChild(this.currentMonth);var p,D,v=s("table",{class:"small"},s("thead",{},s("tr",{class:"weekdays"},(p=this.config.weekdays,D=document.createDocumentFragment(),p.forEach(function(t){D.appendChild(s("th",{},t))}),D))));return this.calendarBody=s("tbody"),this.calendarBody.appendChild(u.call(this,h,c,this.month,this.year)),v.appendChild(this.calendarBody),f.appendChild(m),f.appendChild(v),this.element.appendChild(f),f.addEventListener("click",function(t){t.preventDefault(),function(t){var e=a(new Date(this.year,this.month));switch(t.target.getAttribute("data-target")){case"month-prev":if(this.config.minDate&&-1===r(e,this.config.minDate))return;this.month--,this.month<0&&(this.year--,this.month=11),l.call(this);break;case"month-next":if(this.config.maxDate&&r(e,this.config.maxDate)>=0)return;this.month++,this.month>11&&(this.year++,this.month=0),l.call(this);break;case"day":var i=a(new Date(this.year,this.month,t.target.textContent)),n=t.target.classList;if(this.config.halfDay)n.contains("halfday")?(n.remove("halfday"),this.config.activeDays=this.config.activeDays.map(function(t){return t[0]===i&&(t[1]="F"),t})):n.contains("active")?(n.remove("active","halfday"),this.config.activeDays=this.config.activeDays.filter(function(t){return t[0]!==i})):(n.add("active","halfday"),this.config.activeDays.push([i,"H"]));else if(n.contains("active"))n.remove("active","halfday"),this.config.activeDays=this.config.activeDays.filter(function(t){return t[0]!==i});else{if(this.config.singleSelection){for(var s=this.element.querySelectorAll("a"),h=0;h<s.length;h++)s[h].classList.remove("active","halfday");this.config.activeDays=[[i,"F"]]}else this.config.activeDays.push([i,"F"]);n.add("active")}this.config.activeDays.sort(function(t,e){return o(t[0])-o(e[0])}),this.callback(this.config.activeDays)}}.call(this,t)}.bind(this)),f}return function(t,e,i){var a={};if(this.element=t,this.callback=e,this.config={utc:!1,weekdays:["Sun","Mon","Tue","Wed","Thur","Fri","Sat"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],minDate:null,maxDate:null,halfDay:!1,omitPast:!1,omitFuture:!1,omitWeekends:!1,omitDays:[],activeDays:[],singleSelection:!1},this.config.startYear=n.current.year(this.config),this.config.startMonth=n.current.month(this.config),i)for(var o in i)this.config.hasOwnProperty(o)&&(this.config[o]=i[o]);return a.options=function(t){if(t)for(var e in t)this.config.hasOwnProperty(e)&&(this.config[e]=t[e])}.bind(this),this.year=this.config.startYear,this.month=this.config.startMonth,d.call(this),a}}();t.Datepickr=i,void 0!==e&&e.exports&&(e.exports=i)}(this)},{}]},{},[1])(1)});
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Datepickr = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+;(function(global) {
+
+  Date.prototype.getPickrDate = function(opts)     { return (opts && opts.utc) ? this.getUTCDate() : this.getDate(); };
+  Date.prototype.getPickrFullYear = function(opts) { return (opts && opts.utc) ? this.getUTCFullYear() : this.getFullYear(); };
+  Date.prototype.getPickrMonth = function(opts)    { return (opts && opts.utc) ? this.getUTCMonth() : this.getMonth(); };
+  Date.prototype.getPickrDay = function(opts)      { return (opts && opts.utc) ? this.getUTCDay() : this.getDay(); };
+
+  var Datepickr = (function() {
+    var currentDate = new Date();
+    var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var buildCache = [];
+    var date = {
+      current: {
+        year: function(opts)  {
+          return currentDate.getPickrFullYear(opts);
+        },
+        month: function(opts) {
+          return currentDate.getPickrMonth(opts);
+        },
+        day: function(opts) {
+          return currentDate.getPickrDate(opts);
+        }
+      },
+      month: {
+        string: function(month, months) {
+          var date = month;
+          return monthToStr(date, months);
+        },
+        numDays: function(month, year) {
+          // Check to see if february is a leap year.
+          // Otherwise, return the respective # of days.
+          return (month === 1 && !(year & 3) &&
+            (year % 1e2 || !(year % 4e2))) ?
+            29 : daysInMonth[month];
+        }
+      }
+    };
+
+    function formatDate(date) {
+      var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return [year, month, day].join('-');
+    }
+
+    function makeDate(date) {
+      return new Date(date);
+    }
+
+    function compareFormattedDate(date1, date2) {
+      var dateDetail1 = date1.split('-');
+      var dateDetail2 = date2.split('-');
+
+      if (dateDetail1[0] < dateDetail2[0]) return -1;
+      if (dateDetail1[0] > dateDetail2[0]) return 1;
+
+      if (dateDetail1[1] < dateDetail2[1]) return -1;
+      if (dateDetail1[1] > dateDetail2[1]) return 1;
+
+      if (dateDetail1[2] < dateDetail2[2]) return -1;
+      if (dateDetail1[2] === dateDetail2[2]) return 0;
+      if (dateDetail1[2] > dateDetail2[2]) return 1;
+    }
+
+    function calendarClick(e) {
+      var time = formatDate(new Date(this.year, this.month));
+      switch (e.target.getAttribute('data-target')) {
+        case 'month-prev':
+          if (this.config.minDate && compareFormattedDate(time, this.config.minDate) === -1) return;
+          this.month--;
+          if (this.month < 0) {
+            this.year--;
+            this.month = 11;
+          }
+          rebuildCalendar.call(this);
+          break;
+        case 'month-next':
+          if (this.config.maxDate && compareFormattedDate(time, this.config.maxDate) >= 0) return;
+          this.month++;
+          if (this.month > 11) {
+            this.year++;
+            this.month = 0;
+          }
+          rebuildCalendar.call(this);
+          break;
+        case 'day':
+          var d = formatDate(new Date(this.year, this.month, e.target.textContent));
+          var c = e.target.classList;
+          if (this.config.halfDay) {
+            if (c.contains('halfday')) {
+              c.remove('halfday');
+              this.config.activeDays = this.config.activeDays.map(function(date) {
+                if (date[0] === d) date[1] = 'F';
+                return date;
+              });
+            } else if (c.contains('active')) {
+              c.remove('active', 'halfday');
+              this.config.activeDays = this.config.activeDays.filter(function(date) {
+                return date[0] !== d;
+              });
+            } else {
+              c.add('active', 'halfday');
+              this.config.activeDays.push([d, 'H']);
+            }
+          } else {
+            if (c.contains('active')) {
+              c.remove('active', 'halfday');
+              this.config.activeDays = this.config.activeDays.filter(function(date) {
+                return date[0] !== d;
+              });
+            } else {
+              if ( this.config.singleSelection ) {
+                var daylinks = this.element.querySelectorAll('a');
+                for (var i = 0; i < daylinks.length; i++) {
+                  daylinks[i].classList.remove('active', 'halfday');
+                }
+                this.config.activeDays = [[d, 'F']];
+              } else {
+                this.config.activeDays.push([d, 'F']);
+              }
+              c.add('active');
+            }
+          }
+
+          this.config.activeDays.sort(function(a, b) {
+            return makeDate(a[0]) - makeDate(b[0]);
+          });
+
+          this.callback(this.config.activeDays);
+          break;
+      }
+    }
+
+    function buildNode(nodeName, attributes, content) {
+      if (!(nodeName in buildCache)) {
+        buildCache[nodeName] = document.createElement(nodeName);
+      }
+
+      var element = buildCache[nodeName].cloneNode(false);
+
+      if (attributes) {
+        for (var attribute in attributes) {
+          element.setAttribute(attribute, attributes[attribute]);
+        }
+      }
+
+      if (content) {
+        if (typeof content === 'object') {
+          element.appendChild(content);
+        } else {
+          element.textContent = content;
+        }
+      }
+
+      return element;
+    }
+
+    function monthToStr(date, months) {
+      return months[date];
+    }
+
+    function roundDate(d) {
+      return new Date(d.getPickrFullYear(this.config), d.getPickrMonth(this.config), d.getPickrDate(this.config));
+    }
+
+    function isToday(year, month, day) {
+      return day === date.current.day(this.config) &&
+        month === date.current.month(this.config) &&
+        year === date.current.year(this.config);
+    }
+
+    function isPast(year, month, day) {
+      return new Date(year, month, day).getTime() < new Date().getTime();
+    }
+
+    function isFuture(year, month, day) {
+      return new Date(year, month, day).getTime() > new Date().getTime();
+    }
+
+    function isWeekend(year, month, day) {
+      var d = new Date(year, month, day).getPickrDay(this.config);
+      return d === 0 || d === 6;
+    }
+
+    function isOmitted(year, month, day) {
+      var d = formatDate(new Date(year, month, day)),
+        is;
+      if (this.config.omitDays.length) {
+        this.config.omitDays.forEach(function(omitted) {
+          if (omitted === d) is = true;
+        });
+      }
+      return is;
+    }
+
+    function buildWeekdays(weekdays) {
+      var weekdayHtml = document.createDocumentFragment();
+      weekdays.forEach(function(weekday) {
+        weekdayHtml.appendChild(buildNode('th', {}, weekday));
+      });
+      return weekdayHtml;
+    }
+
+    function rebuildCalendar() {
+      while (this.calendarBody.hasChildNodes()) {
+        this.calendarBody.removeChild(this.calendarBody.lastChild);
+      }
+
+      var firstOfMonth = new Date(this.year, this.month, 1).getPickrDay(this.config),
+        numDays = date.month.numDays(this.month, this.year);
+
+      this.currentMonth.textContent = date.month.string(this.month, this.config.months) + ' ' + this.year;
+      this.calendarBody.appendChild(buildDays.call(this, firstOfMonth, numDays, this.month, this.year));
+    }
+
+    function buildCurrentMonth(config, month, year, months) {
+      return buildNode('strong', {
+        class: 'small'
+      }, date.month.string(month, months) + ' ' + year);
+    }
+
+    function buildMonths() {
+      var months = buildNode('div', {
+        'class': 'months'
+      });
+      var prevMonth = buildNode('a', {
+        'class': 'icon next button short quiet',
+        'data-target': 'month-next',
+        'href': '#'
+      });
+      var nextMonth = buildNode('a', {
+        'class': 'icon prev button short quiet',
+        'data-target': 'month-prev',
+        'href': '#'
+      });
+
+      months.appendChild(prevMonth);
+      months.appendChild(nextMonth);
+      return months;
+    }
+
+    function buildDays(firstOfMonth, numDays, month, year) {
+      var calendarBody = document.createDocumentFragment(),
+        row = buildNode('tr'),
+        dayCount = 0,
+        klass,
+        omit,
+        i;
+
+      // Print out previous month's 'days'
+      for (i = 1; i <= firstOfMonth; i++) {
+        row.appendChild(buildNode('td'));
+        dayCount++;
+      }
+
+      for (i = 1; i <= numDays; i++) {
+        omit = false;
+
+        // If we have reached the end of a week,
+        // wrap to the next line.
+        if (dayCount === 7) {
+          calendarBody.appendChild(row);
+          row = buildNode('tr');
+          dayCount = 0;
+        }
+
+        if (isToday.call(this, year, month, i)) {
+          if (this.config.omitWeekends && isWeekend.call(this, year, month, i) ||
+            this.config.omitDays && this.config.omitDays.length && isOmitted.call(this, year, month, i)) {
+
+            klass = 'today quiet';
+            omit = true;
+          } else {
+            klass = 'today';
+          }
+        } else if (this.config.omitPast && isPast(year, month, i) ||
+          this.config.omitFuture && isFuture(year, month, i) ||
+          this.config.omitWeekends && isWeekend.call(this, year, month, i) ||
+          this.config.omitDays && this.config.omitDays.length && isOmitted.call(this, year, month, i)) {
+
+          klass = 'fill-light quiet';
+          omit = true;
+        } else {
+          klass = 'fill-light';
+        }
+
+        var self = this;
+        // If any dates were passed set day as active.
+        if (this.config.activeDays.length) {
+          this.config.activeDays.forEach(function(d) {
+            if (compareFormattedDate(d[0], formatDate(new Date(year, month, i))) === 0) {
+              klass += (d[1] === 'F') ? ' active' : ' halfday active';
+            }
+          });
+        }
+        row.appendChild(buildNode('td', {}, buildNode('a', {
+          'class': klass,
+          'data-target': (!omit) ? 'day' : false,
+          'href': '#'
+        }, i)));
+
+        dayCount++;
+      }
+
+      // If we haven't finished at the end of the week,
+      // start writing out the 'days' for the next month.
+      for (i = 1; i <= (7 - dayCount); i++) {
+        row.appendChild(buildNode('td'));
+      }
+
+      calendarBody.appendChild(row);
+      return calendarBody;
+    }
+
+    function buildCalendar() {
+      var firstOfMonth = new Date(this.config.startYear, this.config.startMonth, 1).getPickrDay(this.config);
+
+      var numDays = date.month.numDays(this.month, this.year);
+      var calendarDiv = buildNode('div', {
+        class: 'date-pickr'
+      });
+
+      this.currentMonth = buildCurrentMonth(this.config, this.month, this.year, this.config.months);
+      var months = buildMonths(this.config, this.month, this.year);
+      months.appendChild(this.currentMonth);
+
+      var calendar = buildNode('table', {
+        class: 'small'
+      }, buildNode('thead', {}, buildNode('tr', {
+        class: 'weekdays'
+      }, buildWeekdays(this.config.weekdays))));
+      this.calendarBody = buildNode('tbody');
+      this.calendarBody.appendChild(buildDays.call(this, firstOfMonth, numDays, this.month, this.year));
+      calendar.appendChild(this.calendarBody);
+
+      calendarDiv.appendChild(months);
+      calendarDiv.appendChild(calendar);
+
+      this.element.appendChild(calendarDiv);
+
+      calendarDiv.addEventListener('click', function(e) {
+        e.preventDefault();
+        calendarClick.call(this, e);
+      }.bind(this));
+
+      return calendarDiv;
+    }
+
+    return function(el, cb, opts) {
+      var datepickr = {};
+      this.element = el;
+      this.callback = cb;
+      this.config = {
+        utc: false,
+        weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        minDate: null,
+        maxDate: null,
+        halfDay: false,
+        omitPast: false,
+        omitFuture: false,
+        omitWeekends: false,
+        omitDays: [],
+        activeDays: [],
+        singleSelection: false
+      };
+
+      this.config.startYear = date.current.year(this.config);
+      this.config.startMonth = date.current.month(this.config);
+
+      if (opts) {
+        for (var key in opts) {
+          if (this.config.hasOwnProperty(key)) {
+            this.config[key] = opts[key];
+          }
+        }
+      }
+
+      var self = this;
+
+      datepickr.options = function(opts) {
+        if (opts) {
+          for (var key in opts) {
+            if (this.config.hasOwnProperty(key)) {
+              this.config[key] = opts[key];
+            }
+          }
+        }
+      }.bind(this);
+
+      this.year = this.config.startYear;
+      this.month = this.config.startMonth;
+      buildCalendar.call(this);
+      return datepickr;
+    };
+  })();
+
+  global.Datepickr = Datepickr;
+  if (typeof module !== 'undefined' && module.exports) module.exports = Datepickr;
+})(this);
+},{}]},{},[1])(1)
+});

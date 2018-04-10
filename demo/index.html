@@ -76,7 +76,7 @@ new Datepickr(document.getElementById('datepickr-omit'), function(res) {
   // Omit the 12th, 13th &amp; 22nd of the following month
   // if they don't already fall on a weekend.
   omitDays: [
-    new Date(d.getFullYear(), month + 1, 12).getTime(),
+    new Date(d.getFullYear(), d.getMonth(), 1).getTime(),
     new Date(d.getFullYear(), month + 1, 13).getTime(),
     new Date(d.getFullYear(), month + 1, 22).getTime()
   ]
@@ -224,16 +224,28 @@ datepickr(el, function(res) {
       output.textContent = JSON.stringify(res);
     });
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
     // Active days
     new Datepickr(document.getElementById('datepickr-activedays'), function(res) {
         console.log(res);
     }, {
       activeDays: [
-        [new Date(d.getFullYear(), d.getMonth(), 1).getTime(), 'F'],
-        [new Date(d.getFullYear(), d.getMonth(), 2).getTime(), 'F'],
-        [new Date(d.getFullYear(), d.getMonth(), 12).getTime(), 'H'],
-        [new Date(d.getFullYear(), d.getMonth(), 13).getTime(), 'F'],
-        [new Date(d.getFullYear(), d.getMonth(), 22).getTime(), 'F'],
+        [formatDate(new Date(d.getFullYear(), d.getMonth(), 1)), 'F'],
+        [formatDate(new Date(d.getFullYear(), d.getMonth(), 2)), 'F'],
+        [formatDate(new Date(d.getFullYear(), d.getMonth(), 12)), 'H'],
+        [formatDate(new Date(d.getFullYear(), d.getMonth(), 13)), 'F'],
+        [formatDate(new Date(d.getFullYear(), d.getMonth(), 22)), 'F'],
       ]
     });
 
@@ -242,11 +254,11 @@ datepickr(el, function(res) {
         console.log(res);
     }, {
       omitPast: true,
-      omitWeekends: true,
+      // omitWeekends: true,
       omitDays: [
-        new Date(d.getFullYear(), month + 1, 12).getTime(),
-        new Date(d.getFullYear(), month + 1, 13).getTime(),
-        new Date(d.getFullYear(), month + 1, 22).getTime()
+        formatDate(new Date(d.getFullYear(), d.getMonth(), 12)),
+        formatDate(new Date(d.getFullYear(), d.getMonth(), 13)),
+        formatDate(new Date(d.getFullYear(), d.getMonth(), 22))
       ]
     });
 

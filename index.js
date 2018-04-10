@@ -188,7 +188,7 @@
     }
 
     function isOmitted(year, month, day) {
-      var d = new Date(year, month, day).getTime(),
+      var d = formatDate(new Date(year, month, day)),
         is;
       if (this.config.omitDays.length) {
         this.config.omitDays.forEach(function(omitted) {
